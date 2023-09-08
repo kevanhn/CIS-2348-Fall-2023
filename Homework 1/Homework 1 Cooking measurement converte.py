@@ -1,3 +1,4 @@
+# Kevin Nguyen 1928145
 # FIXME (1): Finish reading other items into variables, then output the three ingredients
 lemon_juice_cups = float(input('Enter amount of lemon juice (in cups):\n'))
 water = float(input("Enter amount of water (in cups):\n"))
