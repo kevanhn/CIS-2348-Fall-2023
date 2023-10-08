@@ -1,3 +1,5 @@
+# Kevin Nguyen 1928145
+
 word = input()
 password = ''
 
