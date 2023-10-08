@@ -1,3 +1,4 @@
+# Kevin Nguyen 1928145
 from datetime import date
 
 
@@ -28,3 +29,17 @@ def format_date(date_str):
                 return f"{month_num}/{day}/{year}"
 
     return None
+
+# Part b. Read dates from input file "inputDates.txt"
+input_filename = "inputDates.txt"
+dates = []
+
+with open(input_filename, "r") as input_file:
+    for line in input_file:
+        date_str = line.strip()
+        if date_str == "-1":
+            break
+
+        formatted_date = format_date(date_str)
+        if formatted_date:
+            dates.append(formatted_date)
