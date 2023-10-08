@@ -32,6 +32,7 @@ def format_date(date_str):
 
 # Part b. Read dates from input file "inputDates.txt"
 input_filename = "inputDates.txt"
+output_filename = "parsedDates.txt"
 dates = []
 
 with open(input_filename, "r") as input_file:
@@ -43,3 +44,8 @@ with open(input_filename, "r") as input_file:
         formatted_date = format_date(date_str)
         if formatted_date:
             dates.append(formatted_date)
+            
+# Part c. Write correct dates into output file "parsedDates.txt"
+with open(output_filename, "w") as output_file:
+    for date in dates:
+        output_file.write(date + "\n")
