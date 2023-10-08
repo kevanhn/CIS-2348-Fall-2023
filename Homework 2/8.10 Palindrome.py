@@ -1,3 +1,5 @@
+# Kevin Nguyen 1928145
+
 def is_palindrome(input_str):
     input_str = input_str.replace(" ", "").lower()
     return input_str == input_str[::-1]
