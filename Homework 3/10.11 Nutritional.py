@@ -41,3 +41,4 @@ if __name__ == "__main__":
         food_item = FoodItem(item_name, amount_fat, amount_carbs, amount_protein)
         food_item.print_info()
         print(f'Number of calories for {num_servings:.2f} serving(s): {food_item.get_calories(num_servings):.2f}')
+        
