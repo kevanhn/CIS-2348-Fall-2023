@@ -14,3 +14,4 @@ for word in words:
 
 for word in words:
     print(f"{word} {word_freq[word]}")
+
