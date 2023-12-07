@@ -185,6 +185,90 @@ class SystemClass:
     def sort_grad_dates(self, student):
         return self.grad_dates.get(student.student_id, '9999-12-31')
 
+    # Method to initiate query for student's major and gpa
+    def query_student_records(self):
+        # Prompt useer to enter major and gpa
+        while True:
+            query = input("Enter a major and GPA (or 'q' to quit): ")
+            # If user enters q, quit program
+            if query.lower() == 'q':
+                break
+            # Parse user input
+            try:
+                major, gpa = self.parse_query(query)
+            # If fail, print error message and loop again
+            except ValueError as e:
+                print(e)
+                continue
+            # Find and print students matching the major and GPA criteria
+            self.find_students_by_major_and_gpa(major, gpa)
+
+    # Method to parse user input into major and GPA
+    def parse_query(self, query):
+        # Split query
+        parts = query.split()
+        # Error if not enough input
+        if len(parts) < 2:
+            raise ValueError("Please enter a major and a GPA.")
+        # Combine all parts
+        major = " ".join(parts[:-1])
+        # Convert last part to float
+        try:
+            gpa = float(parts[-1])
+        # Error if GPA is not float
+        except ValueError:
+            raise ValueError("Invalid GPA format.")
+
+        return major, gpa
+
+    # Method to find and print students based on major and GPA criteria
+    def find_students_by_major_and_gpa(self, major, gpa):
+        # Lists to store exact and close GPA matches
+        found_students = []
+        close_students = []
+        # Loop that checks if students major matches and no disciplinary action
+        for student_id, student in self.students.items():
+            if student.major == major and not student.disciplinary_action:
+                student_gpa = float(self.gpa_data.get(student_id, 0))
+                # Check if student's GPA is within 0.1 of queried GPA
+                if abs(student_gpa - gpa) <= 0.1:
+                    found_students.append(student)
+                # Check if student's GPA is within 0.25 of queried GPA
+                elif abs(student_gpa - gpa) <= 0.25:
+                    close_students.append(student)
+
+        # Print found students and close matches
+        if found_students:
+            print("Your student(s):")
+            for student in found_students:
+                print(
+                    f"{student.student_id}, {student.first_name}, {student.last_name}, "
+                    f"{self.gpa_data[student.student_id]}")
+
+            print("\nYou may, also, consider:")
+            for student in close_students:
+                if student not in found_students:
+                    print(f"{student.student_id}, {student.first_name}, {student.last_name}, "
+                          f"{self.gpa_data[student.student_id]}")
+        else:
+            # Find and print the closest GPA student if no exact matches
+            closest_student = None
+            min_diff = float('inf')
+            for student_id, student in self.students.items():
+                if student.major == major and not student.disciplinary_action:
+                    student_gpa = float(self.gpa_data.get(student_id, 0))
+                    if abs(student_gpa - gpa) < min_diff:
+                        min_diff = abs(student_gpa - gpa)
+                        closest_student = student
+
+            if closest_student:
+                print("Closest student:")
+                print(f"{closest_student.student_id}, {closest_student.first_name}, {closest_student.last_name}, "
+                      f"{self.gpa_data[closest_student.student_id]}")
+            else:
+                print("No such student")
+
+
 
 if __name__ == "__main__":
     # Instantiate
@@ -209,3 +293,6 @@ if __name__ == "__main__":
     system.generate_major_reports()
     system.generate_scholarship_candidates_report(scholarship_candidates_output_file)
     system.generate_disciplined_students_report(disciplined_students_output_file)
+
+    # Load system to query records
+    system.query_student_records()
