@@ -269,7 +269,6 @@ class SystemClass:
                 print("No such student")
 
 
-
 if __name__ == "__main__":
     # Instantiate
     system = SystemClass()
